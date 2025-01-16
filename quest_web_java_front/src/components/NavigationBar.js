@@ -8,7 +8,7 @@ function NavigationBar() {
 
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand as={NavLink} to="/">IDV-WEB4</Navbar.Brand>
+      <Navbar.Brand as={NavLink} to="/">E-Co</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
