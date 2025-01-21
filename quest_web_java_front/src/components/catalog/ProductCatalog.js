@@ -46,7 +46,7 @@ function ProductCatalog() {
                                 <div className="single-product">
                                     <div className="product-image-container">
                                         <img 
-                                            src={product.imageUrl || noImageAvailable} 
+                                            src={`http://localhost:8090${product.imageUrl}`  || noImageAvailable} 
                                             alt={product.name} 
                                             className="product-image"
                                         />
@@ -72,9 +72,9 @@ function ProductCatalog() {
                     )}
                 </div>
             </div>
-            <div className="cart-container">
-                <Cart cart={cart} />
-            </div>
+            {/* <div className="cart-container"> */}
+                {/* <Cart cart={cart} /> */}
+            {/* </div> */}
         </div>
     );
 }
