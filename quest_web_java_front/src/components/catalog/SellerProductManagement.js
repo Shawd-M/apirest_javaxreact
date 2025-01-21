@@ -187,7 +187,7 @@ function SellerProductManagement() {
                                     <td>
                                         <div className="product-image-container">
                                             <img 
-                                                src={product.imageUrl || noImageAvailable} 
+                                                src={`http://localhost:8090${product.imageUrl}`  || noImageAvailable} 
                                                 alt={product.name} 
                                                 className="product-image"
                                             />

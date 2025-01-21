@@ -13,9 +13,9 @@ if ($conn->connect_error) {
 }
 
 $users = [
-    ['username' => 'admin_user', 'password' => password_hash('admin123', PASSWORD_DEFAULT), 'role' => 'admin'],
-    ['username' => 'seller_user', 'password' => password_hash('seller123', PASSWORD_DEFAULT), 'role' => 'seller'],
-    ['username' => 'regular_user', 'password' => password_hash('user123', PASSWORD_DEFAULT), 'role' => 'user'],
+    ['username' => 'admin', 'password' => password_hash('admin', PASSWORD_DEFAULT), 'role' => 'ROLE_ADMIN'],
+    ['username' => 'seller', 'password' => password_hash('seller', PASSWORD_DEFAULT), 'role' => 'ROLE_SELLER'],
+    ['username' => 'user', 'password' => password_hash('user', PASSWORD_DEFAULT), 'role' => 'ROLE_USER'],
 ];
 
 foreach ($users as $user) {
