@@ -5,10 +5,22 @@ import Cart from '../catalog/Cart';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/productcatalog.css'; 
 import noImageAvailable from '../../public/image-non-disponible.jpg';
+import { useCart } from './CartContext';
 
 function ProductCatalog() {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+
+    const { addToCart, handleCheckout } = useCart();
+
+    const [selectedImage, setSelectedImage] = useState(null); // État pour l'image agrandie
+
+    const purchaseInstant = (product) => {
+        addToCart(product);
+        handleCheckout();
+    };
+
+
 
     useEffect(() => {
         fetch('http://localhost:8090/products')
@@ -23,18 +35,14 @@ function ProductCatalog() {
             .catch(error => console.error('Erreur lors de la récupération des produits:', error));
     }, []);
 
-    const addToCart = (product) => {
-        setCart(prevCart => {
-            const existingProduct = prevCart.find(item => item.id === product.id);
-            if (existingProduct) {
-                return prevCart.map(item =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-                );
-            } else {
-                return [...prevCart, { ...product, quantity: 1 }];
-            }
-        });
+    const displayFull = (image) => {
+        setSelectedImage(image); // Afficher l'image sélectionnée
     };
+
+    const closeFullScreen = () => {
+        setSelectedImage(null); // Fermer l'affichage plein écran
+    };
+
 
     return (
         <div className="product-catalog-container">
@@ -52,10 +60,13 @@ function ProductCatalog() {
                                         />
                                         <div className="part-1">
                                             <ul>
-                                                <li><a href="#"><FontAwesomeIcon icon={faShoppingCart} /></a></li>
+                                                <li><a href="#"><FontAwesomeIcon icon={faShoppingCart} onClick={() => purchaseInstant(product)}/></a></li>
                                                 <li><a href="#"><FontAwesomeIcon icon={faHeart} /></a></li>
-                                                <li><a href="#"><FontAwesomeIcon icon={faPlus} /></a></li>
-                                                <li><a href="#"><FontAwesomeIcon icon={faExpand} /></a></li>
+                                                <li><a href="#"><FontAwesomeIcon icon={faPlus} onClick={() => addToCart(product)}/></a></li>
+                                                <li>                                                    
+                                                    <a href="#" onClick={(e) => { e.preventDefault(); displayFull(`http://localhost:8090${product.imageUrl}`); }}>
+                                                        <FontAwesomeIcon icon={faExpand} />
+                                                    </a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -63,7 +74,6 @@ function ProductCatalog() {
                                     <h4 className="product-price">{product.description}</h4>
                                     <h4 className="product-price">{product.price} €</h4>
                                     <h4 className="product-price">Stock : {product.stockQuantity}</h4>
-                                    <button onClick={() => addToCart(product)}>Ajouter au panier</button>
                                 </div>
                             </div>
                         ))
@@ -72,9 +82,29 @@ function ProductCatalog() {
                     )}
                 </div>
             </div>
-            {/* <div className="cart-container"> */}
-                {/* <Cart cart={cart} /> */}
-            {/* </div> */}
+            {selectedImage && (
+                <div 
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 1000,
+                    }}
+                    onClick={closeFullScreen}
+                >
+                    <img 
+                        src={selectedImage} 
+                        alt="Full Screen" 
+                        style={{ maxHeight: '90%', maxWidth: '90%' }} 
+                    />
+                </div>
+            )}
         </div>
     );
 }
