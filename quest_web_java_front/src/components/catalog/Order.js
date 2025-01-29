@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/authContext';
 import { Modal, Button } from 'react-bootstrap';
+import { useCart } from '../catalog/CartContext';
+
 
 function Order() {
     const location = useLocation();
-    const { cart } = location.state || { cart: [] };
+    const { cart } = useCart();
     const { authToken, user, isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);

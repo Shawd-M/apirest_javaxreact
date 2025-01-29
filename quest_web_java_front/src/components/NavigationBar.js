@@ -8,14 +8,14 @@ import Form from 'react-bootstrap/Form';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { CiShoppingCart } from "react-icons/ci";
 import Cart from "./catalog/Cart"; // Ton composant existant
+import { useCart } from '../components/catalog/CartContext';
+
 
 function NavigationBar() {
   const { isAuthenticated, logout, user } = useAuth();
-
+  const { cart } = useCart();
   const [isCartOpen, setCartOpen] = useState(false); // Gère l'affichage du panier
 
-  // Exemple de panier dynamique (remplace par ton propre état ou contexte)
-  const [cart, setCart] = useState([]);
 
   const toggleCart = () => setCartOpen((prev) => !prev);
 
