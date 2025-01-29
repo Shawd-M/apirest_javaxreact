@@ -17,7 +17,9 @@ function ProductCatalog() {
 
     const purchaseInstant = (product) => {
         addToCart(product);
-        handleCheckout();
+        setTimeout(() => {
+            handleCheckout(); 
+        }, 100);
     };
 
 
