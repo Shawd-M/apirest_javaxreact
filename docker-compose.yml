@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./quest_web_java
+    container_name: quest_web_java
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/quest_web?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: josephD
+      SPRING_DATASOURCE_PASSWORD: admin
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build: ./quest_web_java_front
+    container_name: quest_web_java_front
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: quest_web
+      MYSQL_USER: josephD
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mysql_data:
